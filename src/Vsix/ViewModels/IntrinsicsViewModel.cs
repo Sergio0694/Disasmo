@@ -14,11 +14,6 @@ namespace Disasmo.ViewModels
         private bool _isDownloading;
         private string _loadingStatus;
 
-        public IntrinsicsViewModel()
-        {
-            IsBusy = true;
-        }
-
         public async void DownloadSources()
         {
             if (_isDownloading || _intrinsics?.Any() == true)
