@@ -121,6 +121,9 @@
     <PackageReference Include="AvalonEdit">
       <Version>6.1.2.30</Version>
     </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm">
+      <Version>8.0.0-preview1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common">
       <Version>4.0.0-6.final</Version>
     </PackageReference>
@@ -142,9 +145,6 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.1.1014-preview2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="MvvmLight">
-      <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="VSSDK.ExtensionManager">
       <Version>11.0.0</Version>

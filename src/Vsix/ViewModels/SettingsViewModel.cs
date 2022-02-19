@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Disasmo.Properties;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Disasmo
 {
-    public class SettingsViewModel : ViewModelBase
+    public sealed class SettingsViewModel : ObservableObject
     {
         private string _pathToLocalCoreClr;
         private bool _jitDumpInsteadOfDisasm;
@@ -73,7 +73,7 @@ namespace Disasmo
             get => _fgEnable;
             set
             {
-                Set(ref _fgEnable, value);
+                SetProperty(ref _fgEnable, value);
                 Settings.Default.FgEnable = value;
                 Settings.Default.Save();
                 if (value)
@@ -88,7 +88,7 @@ namespace Disasmo
             get => _fgPhase;
             set
             {
-                Set(ref _fgPhase, value);
+                SetProperty(ref _fgPhase, value);
                 Settings.Default.FgPhase = value;
                 Settings.Default.Save();
             }
@@ -99,7 +99,7 @@ namespace Disasmo
             get => _graphvisDot;
             set
             {
-                Set(ref _graphvisDot, value);
+                SetProperty(ref _graphvisDot, value);
                 Settings.Default.GraphvisDotPath = value;
                 Settings.Default.Save();
             }
@@ -110,7 +110,7 @@ namespace Disasmo
             get => _pathToLocalCoreClr;
             set
             {
-                Set(ref _pathToLocalCoreClr, value);
+                SetProperty(ref _pathToLocalCoreClr, value);
                 Settings.Default.PathToCoreCLR_V7 = value;
                 Settings.Default.Save();
 
@@ -138,7 +138,7 @@ namespace Disasmo
         public ObservableCollection<string> CustomJits
         {
             get => _customJits;
-            set => Set(ref _customJits, value);
+            set => SetProperty(ref _customJits, value);
         }
 
         public string SelectedCustomJit
@@ -153,7 +153,7 @@ namespace Disasmo
                     UsePGO = false;
                     JitDumpInsteadOfDisasm = false;
                 }
-                Set(ref _selectedCustomJit, value);
+                SetProperty(ref _selectedCustomJit, value);
             }
         }
 
@@ -164,7 +164,7 @@ namespace Disasmo
             get => _runAppMode;
             set
             {
-                Set(ref _runAppMode, value);
+                SetProperty(ref _runAppMode, value);
                 Settings.Default.RunAppMode_V7 = value;
                 Settings.Default.Save();
             }
@@ -175,7 +175,7 @@ namespace Disasmo
             get => _printInlinees;
             set
             {
-                Set(ref _printInlinees, value);
+                SetProperty(ref _printInlinees, value);
                 if (value)
                 {
                     // Reset "Use JitDump" flag which should also reset FlowGraph flag
@@ -192,7 +192,7 @@ namespace Disasmo
             get => _usePGO;
             set
             {
-                Set(ref _usePGO, value);
+                SetProperty(ref _usePGO, value);
                 if (value) 
                     this.UseTieredJit = true;
 
@@ -206,7 +206,7 @@ namespace Disasmo
             get => _useNoRestoreFlag;
             set
             {
-                Set(ref _useNoRestoreFlag, value);
+                SetProperty(ref _useNoRestoreFlag, value);
                 Settings.Default.UseNoRestoreFlag_V7 = value;
                 Settings.Default.Save();
             }
@@ -217,7 +217,7 @@ namespace Disasmo
             get => _presenterMode;
             set
             {
-                Set(ref _presenterMode, value);
+                SetProperty(ref _presenterMode, value);
                 Settings.Default.PresenterMode = value;
                 Settings.Default.Save();
             }
@@ -228,7 +228,7 @@ namespace Disasmo
             get => _useCustomRuntime;
             set
             {
-                Set(ref _useCustomRuntime, value);
+                SetProperty(ref _useCustomRuntime, value);
                 Settings.Default.UseCustomRuntime_V2 = value;
                 Settings.Default.Save();
                 if (!value)
@@ -243,8 +243,8 @@ namespace Disasmo
             get => _useDotnetPublishForReload;
             set
             {
-                Set(ref _useDotnetPublishForReload, value);
-                Set(ref _useDotnetBuildForReload, !value);
+                SetProperty(ref _useDotnetPublishForReload, value);
+                SetProperty(ref _useDotnetBuildForReload, !value);
                 Settings.Default.UseDotnetBuildForReload_V7 = !value;
                 Settings.Default.Save();
             }
@@ -255,8 +255,8 @@ namespace Disasmo
             get => _useDotnetBuildForReload;
             set
             {
-                Set(ref _useDotnetBuildForReload, value);
-                Set(ref _useDotnetPublishForReload, !value);
+                SetProperty(ref _useDotnetBuildForReload, value);
+                SetProperty(ref _useDotnetPublishForReload, !value);
                 Settings.Default.UseDotnetBuildForReload_V7 = value;
                 Settings.Default.Save();
             }
@@ -267,7 +267,7 @@ namespace Disasmo
             get => _jitDumpInsteadOfDisasm;
             set
             {
-                Set(ref _jitDumpInsteadOfDisasm, value);
+                SetProperty(ref _jitDumpInsteadOfDisasm, value);
                 Settings.Default.JitDumpInsteadOfDisasm_V7 = value;
                 Settings.Default.Save();
                 if (!value)
@@ -286,7 +286,7 @@ namespace Disasmo
             get => _useTieredJit;
             set
             {
-                Set(ref _useTieredJit, value);
+                SetProperty(ref _useTieredJit, value);
                 Settings.Default.UseTieredJit_V2 = value;
                 Settings.Default.Save();
             }
@@ -297,7 +297,7 @@ namespace Disasmo
             get => _showAsmComments;
             set
             {
-                Set(ref _showAsmComments, value);
+                SetProperty(ref _showAsmComments, value);
                 Settings.Default.ShowAsmComments_V7 = value;
                 Settings.Default.Save();
             }
@@ -308,7 +308,7 @@ namespace Disasmo
             get => _customEnvVars;
             set
             {
-                Set(ref _customEnvVars, value);
+                SetProperty(ref _customEnvVars, value);
                 Settings.Default.CustomEnvVars3_V10 = value;
                 Settings.Default.Save();
             }
@@ -319,7 +319,7 @@ namespace Disasmo
             get => _crossgen2Args;
             set
             {
-                Set(ref _crossgen2Args, value);
+                SetProperty(ref _crossgen2Args, value);
                 Settings.Default.CrossgenArgs_V2 = value;
                 Settings.Default.Save();
             }
@@ -328,19 +328,19 @@ namespace Disasmo
         public bool UpdateIsAvailable
         {
             get => _updateIsAvailable;
-            set { Set(ref _updateIsAvailable, value); }
+            set { SetProperty(ref _updateIsAvailable, value); }
         }
 
         public Version CurrentVersion
         {
             get => _currentVersion;
-            set => Set(ref _currentVersion, value);
+            set => SetProperty(ref _currentVersion, value);
         }
 
         public Version AvailableVersion
         {
             get => _availableVersion;
-            set => Set(ref _availableVersion, value);
+            set => SetProperty(ref _availableVersion, value);
         }
 
         public ICommand BrowseCommand => new RelayCommand(() =>
@@ -356,7 +356,7 @@ namespace Disasmo
             get => _allowDisasmInvocations;
             set
             {
-                Set(ref _allowDisasmInvocations, value);
+                SetProperty(ref _allowDisasmInvocations, value);
                 Settings.Default.AllowDisasmInvocations_V7 = value;
                 Settings.Default.Save();
             }

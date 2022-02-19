@@ -1,6 +1,4 @@
 ﻿using EnvDTE;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
@@ -16,10 +14,12 @@ using Disasmo.Utils;
 using Disasmo.ViewModels;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Disasmo
 {
-    public class MainViewModel : ViewModelBase
+    public sealed class MainViewModel : ObservableObject
     {
         private string _output;
         private string _previousOutput;
@@ -42,27 +42,10 @@ namespace Disasmo
 
         public event Action MainPageRequested;
 
-        public MainViewModel()
-        {
-            if (IsInDesignMode)
-            {
-                // Some design-time data for development
-                JitDumpPhases = new []
-                    {
-                        "Pre-import",
-                        "Profile incorporation",
-                        "Importation",
-                        "Morph - Add internal blocks",
-                        "Compute edge weights (1, false)",
-                        "Build SSA representation",
-                    };
-            }
-        }
-
         public string[] JitDumpPhases
         {
             get => _jitDumpPhases;
-            set => Set(ref _jitDumpPhases, value);
+            set => SetProperty(ref _jitDumpPhases, value);
         }
 
         public string Output
@@ -72,7 +55,7 @@ namespace Disasmo
             {
                 if (!string.IsNullOrWhiteSpace(_output))
                     PreviousOutput = _output;
-                Set(ref _output, value);
+                SetProperty(ref _output, value);
 
                 const string phasePrefix = "*************** Starting PHASE ";
                 JitDumpPhases = (Output ?? "")
@@ -86,13 +69,13 @@ namespace Disasmo
         public string PreviousOutput
         {
             get => _previousOutput;
-            set => Set(ref _previousOutput, value);
+            set => SetProperty(ref _previousOutput, value);
         }
 
         public string LoadingStatus
         {
             get => _loadingStatus;
-            set => Set(ref _loadingStatus, value);
+            set => SetProperty(ref _loadingStatus, value);
         }
 
         public CancellationTokenSource UserCts { get; set; }
@@ -113,7 +96,7 @@ namespace Disasmo
         public bool Success
         {
             get => _success;
-            set => Set(ref _success, value);
+            set => SetProperty(ref _success, value);
         }
 
         public bool IsLoading
@@ -125,20 +108,20 @@ namespace Disasmo
                 {
                     UserCts = new CancellationTokenSource();
                 }
-                Set(ref _isLoading, value);
+                SetProperty(ref _isLoading, value);
             }
         }
 
         public string StopwatchStatus
         {
             get => _stopwatchStatus;
-            set => Set(ref _stopwatchStatus, value);
+            set => SetProperty(ref _stopwatchStatus, value);
         }
 
         public string FgPngPath
         {
             get => _fgPngPath;
-            set => Set(ref _fgPngPath, value);
+            set => SetProperty(ref _fgPngPath, value);
         }
         
 

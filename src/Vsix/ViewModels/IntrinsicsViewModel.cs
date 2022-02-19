@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Disasmo.Utils;
-using GalaSoft.MvvmLight;
 
 namespace Disasmo.ViewModels
 {
-    public class IntrinsicsViewModel : ViewModelBase
+    public sealed class IntrinsicsViewModel : ObservableObject
     {
         private string _input;
         private List<IntrinsicsInfo> _suggestions;
@@ -16,27 +16,12 @@ namespace Disasmo.ViewModels
 
         public IntrinsicsViewModel()
         {
-            if (IsInDesignMode)
-            {
-                Suggestions = new List<IntrinsicsInfo>
-                {
-                    new IntrinsicsInfo {Comments = "/// <summary>\n some comments 1\n</summary>", Method = "void Foo()"},
-                    new IntrinsicsInfo {Comments = "/// <summary>\n some comments 2\n</summary>", Method = "void FooBoo(string str)"},
-                };
-            }
-            else
-                IsBusy = true;
-        }
-
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => Set(ref _isBusy, value);
+            IsBusy = true;
         }
 
         public async void DownloadSources()
         {
-            if (IsInDesignMode || _isDownloading || _intrinsics?.Any() == true)
+            if (_isDownloading || _intrinsics?.Any() == true)
                 return;
 
             IsBusy = true;
@@ -46,12 +31,18 @@ namespace Disasmo.ViewModels
             _isDownloading = false;
         }
 
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
         public string Input
         {
             get => _input;
             set
             {
-                Set(ref _input, value);
+                SetProperty(ref _input, value);
                 if (_intrinsics == null || string.IsNullOrWhiteSpace(value) || value.Length < 3)
                     Suggestions = null;
                 else
@@ -62,13 +53,13 @@ namespace Disasmo.ViewModels
         public string LoadingStatus
         {
             get => _loadingStatus;
-            set => Set(ref _loadingStatus, value);
+            set => SetProperty(ref _loadingStatus, value);
         }
 
         public List<IntrinsicsInfo> Suggestions
         {
             get => _suggestions;
-            set => Set(ref _suggestions, value);
+            set => SetProperty(ref _suggestions, value);
         }
     }
 }
